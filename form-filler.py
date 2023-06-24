@@ -3,7 +3,7 @@ import selenium
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
-from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import NoSuchElementException, UnexpectedAlertPresentException
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -46,7 +46,7 @@ driver.get('https://rskilling.reliancefoundation.org/candidate/create')
 row_number = 120 + index
 
 # Iterate over the rows in the Excel file
-for row in worksheet.iter_rows(min_row=51, values_only=True):
+for row in worksheet.iter_rows(min_row=108, values_only=True):
     index+1
     # Extract data from Excel
     split_gmail = row[16].split('@')
@@ -58,7 +58,6 @@ for row in worksheet.iter_rows(min_row=51, values_only=True):
     doj = row[14]
     pan = row[40]
     pyperclip.copy(name)
-    print("row printing",email)
     print(row)
 
     try:
@@ -66,10 +65,10 @@ for row in worksheet.iter_rows(min_row=51, values_only=True):
         time.sleep(3)
         # Find the form elements and fill them
         driver.find_element(By.XPATH, '//*[@id="cand_form"]/div[1]/div/div[1]/div[1]/span/span[1]/span/span[2]').click()
-        driver.find_element(By.XPATH, '/html/body/span/span/span[2]/ul/li[7]').click()
+        driver.find_element(By.XPATH, '/html/body/span/span/span[2]/ul/li[1]').click()
         time.sleep(2)
         driver.find_element(By.XPATH, '/html/body/div/div[1]/section[2]/div/div/form/div[1]/div/div[1]/div[2]/div[1]/span/span[1]/span/span[2]').click()
-        driver.find_element(By.XPATH, '/html/body/span/span/span[2]/ul/li[3]').click()
+        driver.find_element(By.XPATH, '/html/body/span/span/span[2]/ul/li[2]').click()
         # time.sleep(5)
         nameInput = driver.find_element(By.XPATH,'/html/body/div/div[1]/section[2]/div/div/form/div[1]/div/div[2]/div[1]/div/input')
         nameInput.send_keys(name)
@@ -91,7 +90,7 @@ for row in worksheet.iter_rows(min_row=51, values_only=True):
         emailInput.send_keys(email)
         # time.sleep(1)
         driver.find_element(By.XPATH, '/html/body/div/div[1]/section[2]/div/div/form/div[1]/div/div[4]/div/span/span[1]/span/span[2]').click()
-        driver.find_element(By.XPATH, '/html/body/span/span/span[2]/ul/li[1]').click()
+        driver.find_element(By.XPATH, '/html/body/span/span/span[2]/ul/li[2]').click()
         # time.sleep(1)
         driver.find_element(By.XPATH, '/html/body/div/div[1]/section[2]/div/div/form/div[1]/div/div[6]/div/select').click()
         driver.find_element(By.XPATH, '/html/body/div/div[1]/section[2]/div/div/form/div[1]/div/div[6]/div/select/option[2]').click()
@@ -125,17 +124,18 @@ for row in worksheet.iter_rows(min_row=51, values_only=True):
         select = Select(distSelect)
 
 # Select the option by value
-        select.select_by_value('378')
+        time.sleep(1)
+        select.select_by_value('394')
         time.sleep(1)
         driver.find_element(By.XPATH, '/html/body/div/div[1]/section[2]/div/div/form/div[1]/div/div[11]/div[3]/div/select').click()
         time.sleep(1)
-        driver.find_element(By.XPATH, '/html/body/div/div[1]/section[2]/div/div/form/div[1]/div/div[11]/div[3]/div/select/option[2]').click()
+        driver.find_element(By.XPATH, '/html/body/div/div[1]/section[2]/div/div/form/div[1]/div/div[11]/div[3]/div/select/option[7]').click()
         time.sleep(1)
 
         driver.find_element(By.XPATH, '/html/body/div/div[1]/section[2]/div/div/form/div[2]/h3[2]').click()
 
         
-        time.sleep(10)
+        time.sleep(15)
         # select_box1 = Select(driver.find_element(By.XPATH, '//*[@id="center-id"]'))
         # select_box1 = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.XPATH,'//*[@id="center-id"]')))
         # select_box1.select_by_visible_text('Pro Consultant Mumbai')  # Index starts from 0, so 6 represents the 7th option
@@ -161,7 +161,7 @@ for row in worksheet.iter_rows(min_row=51, values_only=True):
                         worksheet.cell(row=row_number, column=1).value = str(row)
                         driver.refresh()
                         continue
-                except selenium.common.exceptions.UnexpectedAlertPresentException:
+                except UnexpectedAlertPresentException:
                     driver.switch_to.alert.dismiss()
        
 
@@ -197,7 +197,7 @@ for row in worksheet.iter_rows(min_row=51, values_only=True):
     print("after login")
     
 
-   
+#    108
 
     # Wait for the page to load (optional)
     verify_upload = driver.find_element(By.XPATH,'/html/body/div[1]/div[1]/section[2]/p/a')
