@@ -14,6 +14,7 @@ import pyperclip
 import openpyxl
 import time
 import datetime
+import random
 
 def format_date(dt):
     if isinstance(dt, datetime.datetime):
@@ -23,7 +24,7 @@ def format_date(dt):
 
 # Load the Excel file
 print("Started")
-workbook = openpyxl.load_workbook('./form-data.xlsx')
+workbook = openpyxl.load_workbook('./form-data2.xlsx')
 worksheet = workbook.active
 
 # Specify the path to the Chrome User Data Directory
@@ -46,17 +47,28 @@ driver.get('https://rskilling.reliancefoundation.org/candidate/create')
 row_number = 120 + index
 
 # Iterate over the rows in the Excel file
-for row in worksheet.iter_rows(min_row=108, values_only=True):
+for row in worksheet.iter_rows(min_row=28, values_only=True):
     index+1
-    # Extract data from Excel
-    split_gmail = row[16].split('@')
-    name = row[8]
-    email = split_gmail[0] +'@gmail.com'
-    phone = row[17]
-    gander = row[12]
+    
+
+    # Generate four random numbers between 1 and 100
+    random_numbers = [random.randint(1, 9) for _ in range(4)]
+
+    # Convert the numbers to strings
+    random_numbers_as_strings = [str(number) for number in random_numbers]
+
+    # Concatenate the numbers into a single string
+    ranNumber = ''.join(random_numbers_as_strings)
+
+
+    split_gmail = row[3].split(' ')
+    name = row[3]
+    email = split_gmail[0] + split_gmail[-1] + ranNumber + '@gmail.com'
+    phone = row[4]
+    gander = row[5]
     dob = row[4]
-    doj = row[14]
-    pan = row[40]
+    doj = row[5]
+    pan = "DASJJ5345K"
     pyperclip.copy(name)
     print(row)
 
@@ -64,17 +76,17 @@ for row in worksheet.iter_rows(min_row=108, values_only=True):
         print("in form block")
         time.sleep(3)
         # Find the form elements and fill them
-        driver.find_element(By.XPATH, '//*[@id="cand_form"]/div[1]/div/div[1]/div[1]/span/span[1]/span/span[2]').click()
+        driver.find_element(By.XPATH, '/html/body/div/div[1]/section[2]/div/div/form/div[1]/div/div[1]/div[1]/span/span[1]/span/span[2]').click()
         driver.find_element(By.XPATH, '/html/body/span/span/span[2]/ul/li[1]').click()
         time.sleep(2)
         driver.find_element(By.XPATH, '/html/body/div/div[1]/section[2]/div/div/form/div[1]/div/div[1]/div[2]/div[1]/span/span[1]/span/span[2]').click()
-        driver.find_element(By.XPATH, '/html/body/span/span/span[2]/ul/li[2]').click()
+        driver.find_element(By.XPATH, '/html/body/span/span/span[2]/ul/li[1]').click()
         # time.sleep(5)
         nameInput = driver.find_element(By.XPATH,'/html/body/div/div[1]/section[2]/div/div/form/div[1]/div/div[2]/div[1]/div/input')
         nameInput.send_keys(name)
         # time.sleep(2)
         driver.find_element(By.XPATH, '/html/body/div/div[1]/section[2]/div/div/form/div[1]/div/div[2]/div[2]/div/span/span[1]/span/span[2]').click()
-        if gander=='M':
+        if gander=='MALE':
             driver.find_element(By.XPATH, '/html/body/span/span/span[2]/ul/li[1]').click()
         else: 
             driver.find_element(By.XPATH,'/html/body/span/span/span[2]/ul/li[2]').click()
@@ -90,7 +102,7 @@ for row in worksheet.iter_rows(min_row=108, values_only=True):
         emailInput.send_keys(email)
         # time.sleep(1)
         driver.find_element(By.XPATH, '/html/body/div/div[1]/section[2]/div/div/form/div[1]/div/div[4]/div/span/span[1]/span/span[2]').click()
-        driver.find_element(By.XPATH, '/html/body/span/span/span[2]/ul/li[2]').click()
+        driver.find_element(By.XPATH, '/html/body/span/span/span[2]/ul/li[1]').click()
         # time.sleep(1)
         driver.find_element(By.XPATH, '/html/body/div/div[1]/section[2]/div/div/form/div[1]/div/div[6]/div/select').click()
         driver.find_element(By.XPATH, '/html/body/div/div[1]/section[2]/div/div/form/div[1]/div/div[6]/div/select/option[2]').click()
